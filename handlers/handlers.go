@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"math/rand"
 	"net/http"
 	"time"
@@ -9,12 +10,18 @@ import (
 )
 
 func URLshorter(c *gin.Context) {
-	URL := c.PostForm("url")
-	if URL == "" {
+	OrginalURL := c.PostForm("url")
+	if OrginalURL == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "there is no url"})
 		return
 	}
 	shortKey := GenerateShortKey()
+
+	shortenedUrl := fmt.Sprintf("http://localhost:7000/short/%s", shortKey)
+
+	c.JSON(http.StatusOK, gin.H{
+		"shortenedURL": shortenedUrl,
+	})
 }
 
 func GenerateShortKey() string {
