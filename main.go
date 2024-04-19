@@ -8,7 +8,9 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.GET("/", func(c *gin.Context) {
+		c.File("assets/index.html")
+	})
 	routes.SetUpRoutes(router)
 	router.Run(":7000")
-
 }
