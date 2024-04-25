@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var UrlMap = make(map[string]string)
+
 func URLshorter(c *gin.Context) {
 	OrginalURL := c.PostForm("url")
 	if OrginalURL == "" {
@@ -18,7 +20,7 @@ func URLshorter(c *gin.Context) {
 	shortKey := GenerateShortKey()
 
 	shortenedUrl := fmt.Sprintf("http://localhost:7000/short/%s", shortKey)
-
+	UrlMap[shortKey] = OrginalURL
 	c.JSON(http.StatusOK, gin.H{
 		"shortenedURL": shortenedUrl,
 	})
@@ -33,4 +35,14 @@ func GenerateShortKey() string {
 		shortKey[i] = charset[rand.Intn(len(charset))]
 	}
 	return string(shortKey)
+}
+
+func Redirect(c *gin.Context) {
+	shortKey := c.Param("shortKey")
+	OrginalURL, exists := UrlMap[shortKey]
+	if !exists {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Url not Found"})
+		return
+	}
+	c.Redirect(http.StatusMovedPermanently, OrginalURL)
 }

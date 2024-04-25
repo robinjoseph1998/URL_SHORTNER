@@ -8,4 +8,5 @@ import (
 
 func SetUpRoutes(r *gin.Engine) {
 	r.POST("/shorter", handlers.URLshorter)
+	r.GET("/short/:shortKey", handlers.Redirect)
 }
