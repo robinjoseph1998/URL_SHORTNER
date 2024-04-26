@@ -21,8 +21,11 @@ func URLshorter(c *gin.Context) {
 
 	shortenedUrl := fmt.Sprintf("http://localhost:7000/short/%s", shortKey)
 	UrlMap[shortKey] = OrginalURL
-	c.JSON(http.StatusOK, gin.H{
-		"shortenedURL": shortenedUrl,
+	// c.JSON(http.StatusOK, gin.H{
+	// 	"shortenedURL": shortenedUrl,
+	// })
+	c.HTML(http.StatusOK, "response.html", gin.H{
+		"URL": shortenedUrl,
 	})
 }
 

@@ -8,6 +8,7 @@ import (
 
 func main() {
 	router := gin.Default()
+	router.LoadHTMLGlob("assets/*")
 	router.GET("/", func(c *gin.Context) {
 		c.File("assets/index.html")
 	})
